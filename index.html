@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="style.css">
+        <title>Startpage</title>
+    </head>
+    <body>
+        <div id="container" onsubmit="submit(event)">
+            <form>
+                <input autocomplete="off" list="oldvalues" id="searchbar" type="text"> 
+                <datalist id="oldvalues">
+                </datalist>
+            </form>
+            <div id="general" class="textbox" style="display:none;">
+            </div>
+            <div id="helppage" class="textbox" style="display:none;">
+                <h3>Help Page</h3>
+                This is a list of the supported commands.<br>
+                For more info please refer to the project's README. You can find it <a href="#">here</a>
+
+                <h4>Command list</h4>
+                <table>
+                    <tr>
+                        <td><span class="mono">/help</span></td>
+                        <td>displays this help page</td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/close</span></td>
+                        <td>closes any opened text page</td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/history</span></td>
+                        <td>displays the autocomplete history</td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/save &lt;string&gt;</span></td>
+                        <td>adds the provided string to the autocomplete suggestions</td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/remove &lt;string&gt;</span></td>
+                        <td>removes the provided string from the autocomplete suggestions</td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/shortcut add &lt;RegExp&gt;=&gt;&lt;string&gt;</span></td>
+                        <td>adds a shortcut from <span class="mono">&lt;RegExp&gt;</span> to <span class="mono">&lt;string&gt;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/shortcut remove &lt;string&gt;</span></td>
+                        <td>removes all shortcuts leading to <span class="mono">&lt;string&gt;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/shortcut list</span></td>
+                        <td>lists all shortcuts</td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/shortcut reset</span></td>
+                        <td>resets all shortcuts</td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/note</span></td>
+                        <td>display the note-list</td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/note add &lt;string&gt;</span></td>
+                        <td>add note-element <span class="mono">&lt;string&gt;</span>, can be html</td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/note remove &lt;id&gt;</span></td>
+                        <td>removes note-element with ID <span class="mono">&lt;id&gt;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/note reset</span></td>
+                        <td>resets the note-list to an empty list</td>
+                    </tr>
+                    <tr>
+                        <td><span class="mono">/setBackground &lt;url&gt;</span></td>
+                        <td>sets the background-image to the image at <span class="mono">&lt;url&gt;</span>. Use <span class="mono">default</span> to use the local img/background.jpeg</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="noteList" class="textbox" style="display:none;">
+                <h3>note-list</h3>
+                <div id="noteListContent">
+                </div>
+            </div>
+        </div>
+        <div id="notification">
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>

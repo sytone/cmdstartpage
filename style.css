@@ -1,0 +1,71 @@
+html {
+    height: 100%;
+    font-family: Tahoma, Geneva, sans-serif;
+    background-color: black;
+    color: #073642;
+    background-image: url("img/background.jpeg");
+    /*background-image: url("https://picsum.photos/1920/1080");*/
+    background-size: cover;
+}
+
+#container {
+    margin-top: 3em;
+    text-align: center;
+
+}
+
+#notification {
+    position: fixed;
+    bottom: 0em;
+    left: 0.5em;
+    font-size: large;
+    font-family: monospace;
+}
+
+#searchbar {
+    color: #070707;
+    background-color: #ececec;
+    box-sizing: border-box;
+    width: 60%;
+    border: 1px solid grey;
+    border-radius: 0px;
+    margin: 0.1em 0 0.1em 0;
+
+}
+
+#helppage td {
+    padding-right: 0.3em;
+}
+
+.textbox {
+    box-sizing: border-box;
+    text-align: left;
+    width: 60%;
+    margin: 0 auto 0.1em auto;
+    background-color: #ececec;
+    border: 1px solid grey;
+    padding: 0em 0.5em 0.5em 0.5em;
+    max-height: 80vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    overflow-x: hidden;
+}
+
+.textbox h3 {
+    text-align: center;
+}
+
+.noteElement {
+    margin-bottom: 0.2em;
+    padding-bottom: 0.2em;
+    border-bottom: 1px solid grey;
+}
+
+.dateId {
+    font-size: small;
+    font-style: italic;
+}
+
+.mono {
+    font-family: monospace;
+}
