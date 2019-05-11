@@ -15,6 +15,7 @@ html {
 }
 
 #notification {
+    color: grey;
     position: fixed;
     bottom: 0em;
     left: 0.5em;

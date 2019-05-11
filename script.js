@@ -1,4 +1,7 @@
-//Usersettings
+/*
+ * Usersettings
+ * default usersettings are overridden if localStorage contains settings
+ */
 var userSettings = {
 shortcuts: [
     ["^gmail$", "https://mail.google.com/mail/"],
@@ -10,19 +13,34 @@ if (localStorage.getItem("userSettings") != undefined) {
     userSettings = JSON.parse(storageContent);
 }
 
-//set background image if necessary
+
+/*
+ * set background image if necessary
+ * otherwise the default css rule will be used
+ */
 if (userSettings.background != "default") {
     document.getElementsByTagName("html")[0].style.backgroundImage = 'url("' + userSettings.background + '")';
 }
 
-//load the old elements into the DOM & script
+
+/*
+ * load the old elements into the DOM & script
+ * the datalist allows suggestions to appear under the seachbar
+ * the javascript object allows tab completion
+ */
 var suggestionList = loadSuggestionData();
 
-//load the noteList
+/*
+ * load the noteList
+ * notes are shown when the command /note is used
+ */
 loadNoteList();
 
 
-//track searchbar content
+/*
+ * track searchbar content
+ * if searchbar content matches the regex from a shortcut, replace it
+ */
 document.getElementById("searchbar").addEventListener("input", function() {
     var v = this.value;
     userSettings.shortcuts.forEach(function(s) {
@@ -36,7 +54,10 @@ document.getElementById("searchbar").addEventListener("input", function() {
     this.value = v;
 }, false);
 
-//listen for keypresses
+/*
+ * listen for keypresses
+ * if the keypress is tab, cycle through the search suggestions
+ */
 var tabPresses = 0;
 var filteredList = "";
 var initialValue = "";
@@ -73,10 +94,17 @@ document.addEventListener('keydown', function(event){
     }
 });
 
-//wake up the datalist
+/*
+ * wake up the datalist
+ * seems necessary for the suggestions to appear under the searchbar
+ */
 document.getElementById("searchbar").click();
 
-
+/*
+ * submit() gets called when the searchbar content is submitted by hitting enter
+ * the function prevents the default behaviour and parses the searchbar content
+ * to execute commands and urlify urly-looking strings
+ */
 function submit(e) {
     e.preventDefault();
     var target = (document.getElementById("searchbar").value);
@@ -112,6 +140,7 @@ function submit(e) {
         notify("Displaying Help");
 
     } else if (target === "/close") {
+        //close all textboxes
         var objs = document.getElementsByClassName("textbox");
         for (let i=0; i<objs.length; i++) {
             objs[i].style.display = "none";
@@ -120,6 +149,7 @@ function submit(e) {
         notify("Closed all text boxes");
 
     } else if (target === "/history") {
+        //display all suggestion data in a textbox
         document.getElementById("general").innerHTML = "<h3>history</h3>";
         document.getElementById("general").style.display = "inline-block";
         for (let i=0; i<suggestionList.length; i++) {
@@ -134,6 +164,7 @@ function submit(e) {
         notify("Displaying note-list");
 
     } else if (target.indexOf("/note ") == 0) {
+        //notes stuff - allows adding and removing notes as well as removing all notes at once
         target = target.split("/note")[1];
         var noteList = document.getElementById("noteListContent");
         if (target.indexOf(" add ") == 0) {
@@ -159,6 +190,7 @@ function submit(e) {
         document.getElementById("searchbar").value = "";
 
     } else if (target.indexOf("/shortcut") == 0) {
+        //add and delete shortcuts
         target = target.split("/shortcut")[1];
         if (target.indexOf(" add ") == 0) {
             let elements = target.substring(5).split("=>");
@@ -199,6 +231,7 @@ function submit(e) {
         document.getElementById("searchbar").value = "";
 
     } else if (target.indexOf("/setBackground ") == 0) {
+        //changing the background image
         try {
             let url = target.split("/setBackground ")[1];
             userSettings.background = url;
@@ -233,6 +266,9 @@ function submit(e) {
     }
 }
 
+/*
+ * allows to update the suggestion list without reloading the page
+ */
 function refreshSuggestionData() {
     var oldvaluesE = document.getElementById("oldvalues");
     oldvaluesE.innerHTML = "";
@@ -244,6 +280,9 @@ function refreshSuggestionData() {
     });
 }
 
+/*
+ * As described above, loads suggestion list into the DOM and the script
+ */
 function loadSuggestionData() {
     if (localStorage.getItem("autocompleteData") == undefined) return [];
 
@@ -259,10 +298,17 @@ function loadSuggestionData() {
     return data;
 }
 
+/*
+ * load the note list
+ * it is stored as plain html and directly added to the div
+ */
 function loadNoteList() {
     document.getElementById("noteListContent").innerHTML = localStorage.getItem("noteListData");
 }
 
+/*
+ * displays a notification in the bottom left corner of the page
+ */
 function notify(string) {
         //notification
         var notifbar = document.getElementById("notification");
@@ -271,10 +317,10 @@ function notify(string) {
         fade("notification");
 }
 
-//util functions
-
-
-//fade element
+/*
+ * the following two functions are supposed to allow the notifications to fade out
+ * and completely disappear if the get overriden by another notification
+ */
 function fade(elementID) {
     var op = 2;
     var element = document.getElementById(elementID);
@@ -288,11 +334,10 @@ function fadeImpl(elementID, elementContent, op) {
     } else {
         if (element.innerHTML == elementContent) {
             element.style.opacity = op;
-            element.style.filter = 'alpha(opacity=' + op * 100 + ")";
 
             op -= op * 0.1;
             var current = element.innerHTML;
-            setTimeout(function(){fadeImpl(elementID, current, op);}, 100);
+            setTimeout(function(){fadeImpl(elementID, current, op);}, 50);
         } else {
             //die
         }
