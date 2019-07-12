@@ -269,7 +269,7 @@ function submit(e) {
         localStorage.setItem("autocompleteData", JSON.stringify(suggestionList));
 
         //urlify
-        if (target.indexOf(".") != -1 && target.indexOf(" ") == -1 && target.indexOf("https://") == -1) {
+        if (target.indexOf(".") != -1 && target.indexOf(" ") == -1 && target.indexOf("https://") == -1 && target.indexOf("http://") == -1) {
             target = "https://" + target;
         }
 
