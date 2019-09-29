@@ -260,6 +260,10 @@ function submit(e) {
             notify("Error: no url provided");
         }
 
+    } else if (target.indexOf("/export") == 0) {
+        //export user data
+        exportData();
+        notify("Exported user data");
 
     } else {
         //store
@@ -323,6 +327,33 @@ function loadSuggestionData() {
 function loadNoteList() {
     document.getElementById("noteListContent").innerHTML = localStorage.getItem("noteListData");
 }
+
+/*
+ * Exports all localStorage content in a file 
+ */
+function exportData() {
+    data = {};
+    filename = "startpage" + Math.round(new Date().getTime() / 1000);
+
+    data.autocompleteData = (localStorage.getItem("autocompleteData"));
+    data.noteListData = (localStorage.getItem("noteListData"));
+    data.userSettings = (localStorage.getItem("userSettings"));
+    data = JSON.stringify(data);
+
+    var file = new Blob([data], {type: "text/plain"});
+    var a = document.createElement("a");
+    var url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    }, 0);
+
+}
+
 
 /*
  * displays a notification in the bottom left corner of the page
