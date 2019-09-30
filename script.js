@@ -264,6 +264,12 @@ function submit(e) {
         //export user data
         exportData();
         notify("Exported user data");
+        document.getElementById("searchbar").value = "";
+
+    } else if (target.indexOf("/import") == 0) {
+        //import user data
+        importData();
+        document.getElementById("searchbar").value = "";
 
     } else {
         //store
@@ -333,7 +339,7 @@ function loadNoteList() {
  */
 function exportData() {
     data = {};
-    filename = "startpage" + Math.round(new Date().getTime() / 1000);
+    filename = "startpage" + Math.round(new Date().getTime() / 1000) + ".txt";
 
     data.autocompleteData = (localStorage.getItem("autocompleteData"));
     data.noteListData = (localStorage.getItem("noteListData"));
@@ -354,6 +360,47 @@ function exportData() {
 
 }
 
+/*
+ * Import data from a save file
+ */
+function importData() {
+    var fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".txt";
+    fileInput.style.display = "none";
+    document.body.appendChild(fileInput);
+
+    fileInput.click();
+
+    fileInput.onchange = function(){
+        var file = fileInput.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.readAsText(file, "UTF-8");
+            reader.onload = function(e) {
+                try {
+                    var data = JSON.parse(e.target.result);
+                    localStorage.setItem("autocompleteData", data.autocompleteData);
+                    localStorage.setItem("noteListData", data.noteListData);
+                    localStorage.setItem("userSettings", data.userSettings);
+                    location.reload();
+
+                } catch (ex) {
+                    notify("File seems corrupted");
+                }
+
+            };
+            reader.onerror = function(e) {
+                notify("Could not load file");
+            };
+        } else {
+            notify("No file provided, aborting");
+        }
+
+    };
+
+
+}
 
 /*
  * displays a notification in the bottom left corner of the page
