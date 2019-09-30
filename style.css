@@ -55,6 +55,7 @@ html {
 
 #helppage td {
     padding-right: 0.3em;
+    vertical-align: top;
 }
 
 .textbox {
