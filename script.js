@@ -33,11 +33,25 @@ if (localStorage.getItem("userSettings") != undefined) {
 
 
 /*
- * set background image if necessary
+ * set background image or video if necessary
  * otherwise the default css rule will be used
  */
 if (userSettings.background != "default") {
-    document.getElementsByTagName("html")[0].style.backgroundImage = 'url("' + userSettings.background + '")';
+    let backgroundURL = userSettings.background;
+    document.getElementsByTagName("html")[0].style.backgroundImage = 'url("' + backgroundURL + '")';
+
+    let extension = backgroundURL.split(".")[backgroundURL.split(".").length-1];
+    if (/^mp4$/.test(extension) || /^ogg$/.test(extension) || /^webm$/.test(extension)) {
+        let vid = document.createElement("video");
+        vid.autoplay = true;
+        vid.loop = true;
+        vid.muted = true;
+        vid.id = "vidBackground";
+        let src = document.createElement("source");
+        src.src = backgroundURL;
+        vid.appendChild(src);
+        document.getElementsByTagName("html")[0].appendChild(vid);
+    }
 }
 
 

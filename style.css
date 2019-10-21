@@ -50,12 +50,20 @@ html {
     border: 1px solid grey;
     border-radius: 0px;
     margin: 0.1em 0 0.1em 0;
-
 }
 
 #helppage td {
     padding-right: 0.3em;
     vertical-align: top;
+}
+
+#vidBackground {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
 }
 
 .textbox {
