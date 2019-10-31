@@ -6,4 +6,4 @@ A simple startpage for everyday use. Features autocomplete for URLs, search hist
 ## Acknowledgements
 
 - The default background picture was taken by [Stephen Seeber](https://www.pexels.com/@stywo) and is licensed under the Pexel License.
-- Project orginally taken from https://gitlab.com/t3Y/startpage/](https://gitlab.com/t3Y/startpage/)
+- Project orginally taken from [https://gitlab.com/t3Y/startpage/](https://gitlab.com/t3Y/startpage/)
