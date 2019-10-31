@@ -21,10 +21,11 @@
  * default usersettings are overridden if localStorage contains settings
  */
 var userSettings = {
-shortcuts: [
-    ["^gmail$", "https://mail.google.com/mail/"],
-], 
-background: "default"
+    shortcuts: [
+        ["^gmail$", "https://mail.google.com/mail/"],
+    ], 
+    background: "default",
+    logHistory: true
 };
 if (localStorage.getItem("userSettings") != undefined) {
     let storageContent = localStorage.getItem("userSettings");
@@ -180,15 +181,30 @@ function submit(e) {
         document.getElementById("searchbar").value = "";
         notify("Closed all text boxes");
 
-    } else if (target === "/history") {
-        //display all suggestion data in a textbox
-        document.getElementById("general").innerHTML = "<h3>history</h3>";
-        document.getElementById("general").style.display = "inline-block";
-        for (let i=0; i<suggestionList.length; i++) {
-            document.getElementById("general").innerHTML += suggestionList[i] + '<br>';
+    } else if (target.indexOf("/history") == 0) {
+        target = target.split("/history")[1];
+        if (target.indexOf(" clear") == 0) {
+            suggestionList = [];
+            localStorage.setItem("autocompleteData", JSON.stringify(suggestionList));
+            location.reload();
+        } else if (target.indexOf(" enable") == 0) {
+            userSettings.logHistory = true;
+            localStorage.setItem("userSettings", JSON.stringify(userSettings));
+            notify("Enabled search history");
+        } else if (target.indexOf(" disable") == 0) {
+            userSettings.logHistory = false;
+            localStorage.setItem("userSettings", JSON.stringify(userSettings));
+            notify("Disabled search history");
+        } else {
+            //display all suggestion data in a textbox
+            document.getElementById("general").innerHTML = "<h3>history</h3>";
+            document.getElementById("general").style.display = "inline-block";
+            for (let i=0; i<suggestionList.length; i++) {
+                document.getElementById("general").innerHTML += suggestionList[i] + '<br>';
+            }
+            notify("Displaying history");
         }
         document.getElementById("searchbar").value = "";
-        notify("Displaying history");
 
     } else if (target === "/note") {
         document.getElementById("noteList").style.display = "inline-block";
@@ -287,11 +303,12 @@ function submit(e) {
 
     } else {
         //store
-        if (suggestionList.indexOf(target) == -1) {
-            let aaa = suggestionList.push(target);
+        if (userSettings.logHistory) {
+            if (suggestionList.indexOf(target) == -1) {
+                let aaa = suggestionList.push(target);
+            }
+            localStorage.setItem("autocompleteData", JSON.stringify(suggestionList));
         }
-        localStorage.setItem("autocompleteData", JSON.stringify(suggestionList));
-
         //urlify
         if (target.indexOf(".") != -1 && target.indexOf(" ") == -1 && target.indexOf("https://") == -1 && target.indexOf("http://") == -1) {
             target = "https://" + target;
@@ -447,7 +464,7 @@ function fadeImpl(elementID, elementContent, op) {
 
             op -= op * 0.1;
             var current = element.innerHTML;
-            setTimeout(function(){fadeImpl(elementID, current, op);}, 50);
+            setTimeout(function(){fadeImpl(elementID, current, op);}, 150);
         } else {
             //die
         }
